@@ -10,7 +10,11 @@ Sett inn en gyldig API-nøkkel fra https://developer.oslobysykkel.no/api i filen
 
 Installer med `npm install` og kjør på localhost med `npm run dev`.
 
+Skal den kjøres i produksjon, må den bygges med `npm run build` og startes med `npm run start`.
+
 ## Om løsningen
 Løsningen er skrevet i Javascript/React med Next.js som rammeverk.
 
 Dataene hentes fra bysykkel-apiet ved lasting av siden. Er endepunktene utilgjengelige, vises en enkel feilmelding på siden.
+
+Jeg bruker ESLint med Standard som ryddehjelp.
