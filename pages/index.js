@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import GoogleMapReact from 'google-map-react'
 import Marker from '../components/Marker'
 import Overlay from '../components/Overlay'
+import Error from '../components/Error'
 import config from '../config'
 
 class Index extends React.Component {
@@ -25,7 +26,7 @@ class Index extends React.Component {
     })
   }
   render () {
-    const { stations, availability } = this.props
+    const { stations, availability, error } = this.props
     return (
       <div>
         <main>
@@ -35,7 +36,7 @@ class Index extends React.Component {
               defaultCenter={this.state.center}
               defaultZoom={this.state.zoom}
             >
-              {stations && stations.map((station, key) => {
+              {!error && stations.map((station, key) => {
                 const stationAvailability = availability.find(element => element.id === station.id)
                 return (
                   <Marker
@@ -49,7 +50,8 @@ class Index extends React.Component {
                 )
               })}
             </GoogleMapReact>
-            <Overlay station={this.state.station} stationAvailability={this.state.stationAvailability} />
+            {!error && <Overlay station={this.state.station} stationAvailability={this.state.stationAvailability} />}
+            {error && <Error />}
           </div>
         </main>
         <style jsx>{`
@@ -100,11 +102,23 @@ Index.getInitialProps = async function () {
   const stationsRes = await fetch(`${config.apiRoot}/stations`, {
     headers: { 'Client-Identifier': config.apiKey }
   })
+  if (stationsRes.status !== 200) {
+    console.log('Henting av stasjoner feilet med', stationsRes.status)
+    return {
+      error: 'Stasjoner kunne ikke hentes'
+    }
+  }
   const stationsData = await stationsRes.json()
 
   const availabilityRes = await fetch(`${config.apiRoot}/stations/availability`, {
     headers: { 'Client-Identifier': config.apiKey }
   })
+  if (availabilityRes.status !== 200) {
+    console.log('Henting av tilgjengelighet feilet med', availabilityRes.status)
+    return {
+      error: 'Tilgjengelighet kunne ikke hentes'
+    }
+  }
   const availabilityData = await availabilityRes.json()
 
   return {
@@ -115,7 +129,8 @@ Index.getInitialProps = async function () {
 
 Index.propTypes = {
   stations: PropTypes.array,
-  availability: PropTypes.array
+  availability: PropTypes.array,
+  error: PropTypes.string
 }
 
 export default Index
