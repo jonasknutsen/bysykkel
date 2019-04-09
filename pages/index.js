@@ -49,7 +49,7 @@ class Index extends React.Component {
                 )
               })}
             </GoogleMapReact>
-            {this.state.station && <Overlay station={this.state.station} stationAvailability={this.state.stationAvailability} />}
+            <Overlay station={this.state.station} stationAvailability={this.state.stationAvailability} />
           </div>
         </main>
         <style jsx>{`

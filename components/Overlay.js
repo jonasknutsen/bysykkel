@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 const Overlay = ({ station, stationAvailability }) => {
   return (
     <div className='overlay-wrapper'>
-      <div className='station-info'>
+      {station && <div className='station-info'>
         <h2>{station.title}</h2>
         <h3>{station.subtitle}</h3>
         <div className='availability-info'>
@@ -15,12 +15,17 @@ const Overlay = ({ station, stationAvailability }) => {
             Tilgjengelige låser: {stationAvailability.availability.locks}
           </div>
         </div>
-      </div>
+      </div>}
+      {!station && <div className='station-info'>
+        <h2>Sykkelstasjonstatus</h2>
+        <p>Velg en sykkelstasjon på kartet for å se status.</p>
+      </div>}
       <style jsx>{`
           .station-info {
             padding: 10px;
             border-radius: 2px;
             border: 1px solid #ddd;
+            text-align: center;
           }
           .availability-info {
             border-top: 1px solid #ddd;
