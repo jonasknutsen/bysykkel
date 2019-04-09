@@ -3,15 +3,15 @@ Webapplikasjon som viser tilgjengeligheten til bysykler i Oslo.
 
 Viser bysykkelstasjoner med antall sykler og ledige låser.
 
-## Om løsningen
-Løsningen er skrevet i Javascript/React med Next.js som rammeverk.
+## Om applikasjonen
+Applikasjonen er skrevet i Javascript/React med Next.js som rammeverk.
 
 Dataene hentes fra bysykkel-apiet ved lasting av siden. Er endepunktene utilgjengelige, vises en enkel feilmelding på siden.
 
 Jeg bruker ESLint med Standard som ryddehjelp.
 
 ## Installasjon
-Maskinen løsningen skal kjøres på, må ha Node/npm installert.
+Maskinen applikasjonen skal kjøres på, må ha Node/npm installert.
 
 Sett inn en gyldige API-nøkler i config.js (se nedenfor).
 
@@ -32,4 +32,7 @@ Enkle tester med Jest
 Kjør testene med `npm run test``
 
 ## Demo
-Løsningen ligger på [https://bysykkel.knutsen.dev]
+Applikasjonen ligger på https://bysykkel.knutsen.dev
+
+## Kompatibilitet
+Fungerer ikke på Internet Explorer i sin nåværende form, uten ekstra polyfill.
