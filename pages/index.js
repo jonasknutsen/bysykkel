@@ -43,9 +43,9 @@ class Index extends React.Component {
                     key={key}
                     lat={station.center.latitude}
                     lng={station.center.longitude}
-                    station={station}
                     stationAvailability={stationAvailability}
                     onClick={() => this.showOverlay(station, stationAvailability)}
+                    chosenOne={this.state.station && this.state.station.id === station.id}
                   />
                 )
               })}
@@ -84,7 +84,6 @@ class Index extends React.Component {
           * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
           }
           body {
             font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
