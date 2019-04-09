@@ -19,12 +19,13 @@ class Index extends React.Component {
     }
   }
 
-  showOverlay = (station, stationAvailability) => {
+  showStation = (station, stationAvailability) => {
     this.setState({
       station,
       stationAvailability
     })
   }
+
   render () {
     const { stations, availability, error } = this.props
     return (
@@ -36,7 +37,7 @@ class Index extends React.Component {
               defaultCenter={this.state.center}
               defaultZoom={this.state.zoom}
             >
-              {!error && stations.map((station, key) => {
+              {!error && stations && stations.map((station, key) => {
                 const stationAvailability = availability.find(element => element.id === station.id)
                 return (
                   <Marker
@@ -44,7 +45,7 @@ class Index extends React.Component {
                     lat={station.center.latitude}
                     lng={station.center.longitude}
                     stationAvailability={stationAvailability}
-                    onClick={() => this.showOverlay(station, stationAvailability)}
+                    onClick={() => this.showStation(station, stationAvailability)}
                     chosenOne={this.state.station && this.state.station.id === station.id}
                   />
                 )
