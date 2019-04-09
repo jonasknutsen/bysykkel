@@ -1,26 +1,55 @@
 import React from 'react'
 import fetch from 'isomorphic-unfetch'
 import PropTypes from 'prop-types'
-import Card from '../components/Card'
+import GoogleMapReact from 'google-map-react'
+import Marker from '../components/Marker'
+import Overlay from '../components/Overlay'
 import config from '../config'
 
 class Index extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      center: {
+        lat: 59.913521,
+        lng: 10.755710
+      },
+      zoom: 15
+    }
+  }
+
+  showOverlay = (station, stationAvailability) => {
+    this.setState({
+      station,
+      stationAvailability
+    })
+  }
   render () {
     const { stations, availability } = this.props
     return (
       <div>
-        <header>
-          <h1>Bysykkeltilgjengelighet</h1>
-        </header>
         <main>
-          <div className='card-list'>
-            {stations && stations.map((station, key) => {
-              const stationAvailability = availability.find(element => element.id === station.id)
-              return (
-                <Card key={key} station={station} stationAvailability={stationAvailability.availability} />
-              )
-            })}
-            {!stations && <div className='error'>Det skjedde en feil ved henting av data. Hva med å prøve å laste inn siden på nytt?</div>}
+          <div className='map'>
+            <GoogleMapReact
+              bootstrapURLKeys={{ key: config.mapApiKey }}
+              defaultCenter={this.state.center}
+              defaultZoom={this.state.zoom}
+            >
+              {stations && stations.map((station, key) => {
+                const stationAvailability = availability.find(element => element.id === station.id)
+                return (
+                  <Marker
+                    key={key}
+                    lat={station.center.latitude}
+                    lng={station.center.longitude}
+                    station={station}
+                    stationAvailability={stationAvailability}
+                    onClick={() => this.showOverlay(station, stationAvailability)}
+                  />
+                )
+              })}
+            </GoogleMapReact>
+            {this.state.station && <Overlay station={this.state.station} stationAvailability={this.state.stationAvailability} />}
           </div>
         </main>
         <style jsx>{`
@@ -33,8 +62,11 @@ class Index extends React.Component {
           }
           main {
             width: 100%;
-            max-width: 1000px;
-            margin: 0 auto;
+            height: 100%;
+          }
+          .map {
+            height: 100vh;
+            width: 100vw;
           }
           .card-list {
             display: flex;
